@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Todos from './components/Todos'
-import { FilterValue, TodoTitle, type TodoId, type Todo as TodoType } from './types'
+import { FilterValue, TodoTitle, type TodoId, type Todo as TodoType, ListOfTodos } from './types'
 import { TODO_FILTERS } from './consts'
 import { Footer } from './components/Footer'
 import Header from './components/Header'
@@ -9,24 +9,23 @@ import Header from './components/Header'
 const mockTodos = [
   {
     id: '1',
-    title: 'Sacar la basura',
-    completed: true
-  },
-  {
-    id: '2',
-    title: 'Organizar la habitación',
-    completed: false
-  },
-  {
-    id: '3',
-    title: 'Realizar la tarea',
+    title: 'Tarea de ejemplo',
     completed: false
   }
 ]
 
 const App = (): JSX.Element => {
-  const [todos, setTodos] = useState(mockTodos)
+  const [todos, setTodos] = useState<ListOfTodos>(() => {
+
+    const storedTodos = localStorage.getItem('todos');
+    return storedTodos ? JSON.parse(storedTodos) : mockTodos;
+   
+  })
   const [filterSelected, setFilterSelected] = useState<FilterValue>(TODO_FILTERS.ALL)
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
 
   const handleRemove = ({id}: TodoId) => {

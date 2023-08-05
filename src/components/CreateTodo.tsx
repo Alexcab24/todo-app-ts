@@ -8,8 +8,9 @@ interface Props {
 
 const CreateTodo: React.FC<Props> = ({ saveTodo }) => {
     const [inputValue, setInputValue] = useState('')
-
+   
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+     
         event.preventDefault()
         saveTodo({ title: inputValue })
         setInputValue('')
